@@ -24,4 +24,9 @@ help: Makefile
 ##TAR    binary    : builds the azdevman binary locally
 .PHONY: binary
 binary:
-	GOOS=$(OS) GOARCH=$(ARCH) go build -ldflags "$()" -o $(BIN_DIR)$(BIN_NAME)
+	CGO_ENABLED=0 GOOS=$(OS) GOARCH=$(ARCH) go build -ldflags "$(AZDEVMAN_LDFLAGS)" -o $(BIN_DIR)$(BIN_NAME)
+
+##TAR    container  :
+.PHONY: container
+container:
+	docker build -t $(BIN_NAME) .
