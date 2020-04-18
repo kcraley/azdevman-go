@@ -1,9 +1,9 @@
 # https://www.gnu.org/software/make/
 
 # Variables
-##VAR    ARCH      : architecture to be used for cross compiling the checkip binary
+##VAR    ARCH      : architecture to be used for cross compiling the azdevman binary
 ARCH ?= amd64
-##VAR    OS        : the operating system type for cross compiling the checkip binary
+##VAR    OS        : the operating system type for cross compiling the azdevman binary
 OS   ?= linux
 
 BIN_DIR   ?= $(dir bin/)
