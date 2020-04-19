@@ -5,13 +5,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// configCurrentContextCmd represents the current-context subcommand
-var configCurrentContextCmd = &cobra.Command{
-	Use:     "current-context",
-	Short:   "Retrieve the currently configured context.",
-	Example: `  azdevman config current-context`,
-	RunE:    configCurrentContextFunc,
-}
+var (
+	// configCurrentContextCmd represents the current-context subcommand
+	configCurrentContextCmd = &cobra.Command{
+		Use:     "current-context",
+		Short:   "Retrieve the name of the current connection context.",
+		Example: `  azdevman config current-context`,
+		Run:     configCurrentContextFunc,
+	}
+)
 
 func init() {
 	// Add `current-context` subcommand to `config`
@@ -19,7 +21,6 @@ func init() {
 }
 
 // configCurrentContextFunc is the main entrypoint for `azdevman config current-context`
-func configCurrentContextFunc(cmd *cobra.Command, args []string) error {
-	log.Info("azdevman config current-context was called")
-	return nil
+func configCurrentContextFunc(cmd *cobra.Command, args []string) {
+	log.Info(options.GetCurrentContextName())
 }
