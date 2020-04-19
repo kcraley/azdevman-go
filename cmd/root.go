@@ -20,6 +20,7 @@ var (
 	connection   *azuredevops.Connection
 	configFile   string
 	verbose      bool
+	options      *config.Context
 	organization string
 	token        string
 
@@ -59,7 +60,7 @@ func initConfig() {
 
 	// Initialize configuration and set values
 	// if they were not set via the CLI flags
-	options, err := config.Init(configFile)
+	options, err = config.Init(configFile)
 	if err != nil {
 		log.Fatal(err)
 	}
