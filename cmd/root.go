@@ -3,6 +3,7 @@ package cmd
 import (
 	"os"
 
+	"github.com/kcraley/azdevman-go/pkg/config"
 	"github.com/microsoft/azure-devops-go-api/azuredevops"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -55,6 +56,20 @@ func initConfig() {
 	if verbose {
 		log.SetLevel(log.DebugLevel)
 	}
+
+	// Initialize configuration and set values
+	// if they were not set via the CLI flags
+	options, err := config.Init(configFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if organization == "" {
+		organization = options.GetCurrentContext().Organization
+	}
+	if token == "" {
+		token = options.GetCurrentContext().Token
+	}
+	log.Debugf("Organization: %s, Token: %s", organization, token)
 }
 
 // Execute is the entrypoint function which runs our command
