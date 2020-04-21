@@ -32,6 +32,7 @@ type Options interface {
 	GetCurrentContext() *Profile
 	GetCurrentContextName() string
 	SetCurrentContext(name string)
+	ViewConfig(configFile string) []byte
 }
 
 // GetCurrentContext returns the Profile type which is configured
@@ -54,6 +55,15 @@ func (c *Context) GetCurrentContextName() string {
 // which connects to a different organization and/or project with a token
 func (c *Context) SetCurrentContext(name string) {
 	c.Current = name
+}
+
+// ViewConfig returns the entire contents of a configuration file
+func (c *Context) ViewConfig() (contents []byte, err error) {
+	contents, err = json.MarshalIndent(c, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+	return contents, err
 }
 
 // Init initializes the config for Azdevman
