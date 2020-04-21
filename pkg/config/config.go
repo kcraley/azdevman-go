@@ -15,10 +15,10 @@ const (
 
 // Profile is a single configuration instance for an Azure DevOps organization
 type Profile struct {
-	Name         string `json:"name,omitempty"`
-	Organization string `json:"organization,omitempty"`
-	Token        string `json:"token,omitempty"`
-	Project      string `json:"project,omitempty"`
+	Name         string `json:"name,omitempty"`         // Generic name of the profile
+	Organization string `json:"organization,omitempty"` // Azure DevOps Organization perform operations against
+	Token        string `json:"token,omitempty"`        // A Personal Access Token of the user making the connection
+	Project      string `json:"project,omitempty"`      // Azure DevOps Project within the Organization to interact in
 }
 
 // Context is the entire configuration which contains multiple profiles
