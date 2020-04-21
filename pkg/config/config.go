@@ -32,7 +32,7 @@ type Options interface {
 	GetCurrentContext() *Profile
 	GetCurrentContextName() string
 	SetCurrentContext(name string)
-	ViewConfig() []byte
+	ViewConfig() ([]byte, error)
 }
 
 // GetCurrentContext returns the Profile type which is configured
