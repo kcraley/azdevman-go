@@ -31,7 +31,7 @@ type Context struct {
 type Options interface {
 	GetCurrentContext() *Profile
 	GetCurrentContextName() string
-	SetCurrentContext(name string)
+	SetCurrentContext(string) bool
 	ViewConfig() ([]byte, error)
 }
 
@@ -53,8 +53,14 @@ func (c *Context) GetCurrentContextName() string {
 
 // SetCurrentContext sets the current context to an existing context
 // which connects to a different organization and/or project with a token
-func (c *Context) SetCurrentContext(name string) {
-	c.Current = name
+func (c *Context) SetCurrentContext(name string) bool {
+	for _, v := range *c.Profiles {
+		if v.Name == name {
+			c.Current = name
+			return true
+		}
+	}
+	return false
 }
 
 // ViewConfig returns the entire contents of a configuration file
