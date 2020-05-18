@@ -42,25 +42,21 @@ type Options interface {
 // CreateDefault creates a new configuration file with default contents
 // at the default config file path "~/.config/azdevman/azdevman.json"
 func (c *Context) CreateDefault() error {
-	// Verify the file doesn't already exist otherwise
-	// create it with the default values
-	if !c.Exists(defaultConfigPath) {
-		file, err := os.Create(defaultConfigPath)
-		if err != nil {
-			return nil
-		}
-		defer file.Close()
-
-		defaultProfile := c.Default()
-		contents, err := json.Marshal(defaultProfile)
-		if err != nil {
-			return err
-		}
-		file.Write(contents)
-		return nil
+	// Create the config file at the default location
+	file, err := os.Create(defaultConfigPath)
+	if err != nil {
+		return err
 	}
-	_, err := os.Stat(defaultConfigPath)
-	return err
+	defer file.Close()
+
+	// Write default configuration contents
+	defaultProfile := c.Default()
+	contents, err := json.Marshal(defaultProfile)
+	if err != nil {
+		return err
+	}
+	file.Write(contents)
+	return nil
 }
 
 // Default generates a standard default Context
