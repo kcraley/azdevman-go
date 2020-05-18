@@ -30,11 +30,60 @@ type Context struct {
 
 // Options represents the option set and its methods for the cli
 type Options interface {
+	CreateDefault() error
+	Default() Context
+	Exists(string) bool
 	GetCurrentContext() *Profile
 	GetCurrentContextName() string
 	SetCurrentContext(string) bool
 	ViewConfig() ([]byte, error)
-	Exists(string) bool
+}
+
+// CreateDefault creates a new configuration file with default contents
+// at the default config file path "~/.config/azdevman/azdevman.json"
+func (c *Context) CreateDefault() error {
+	// Verify the file doesn't already exist otherwise
+	// create it with the default values
+	if !c.Exists(defaultConfigPath) {
+		file, err := os.Create(defaultConfigPath)
+		if err != nil {
+			return nil
+		}
+		defer file.Close()
+
+		defaultProfile := c.Default()
+		contents, err := json.Marshal(defaultProfile)
+		if err != nil {
+			return err
+		}
+		file.Write(contents)
+		return nil
+	}
+	_, err := os.Stat(defaultConfigPath)
+	return err
+}
+
+// Default generates a standard default Context
+func (c *Context) Default() Context {
+	return Context{
+		Current: "default",
+		Profiles: &[]Profile{
+			{
+				Name:         "default",
+				Organization: "",
+				Token:        "",
+				Project:      "",
+			},
+		},
+	}
+}
+
+// Exists verifies that the configuration file existin on the local filesystem
+func (c *Context) Exists(path string) bool {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return false
+	}
+	return true
 }
 
 // GetCurrentContext returns the Profile type which is configured
@@ -72,14 +121,6 @@ func (c *Context) ViewConfig() (contents []byte, err error) {
 		return nil, err
 	}
 	return contents, err
-}
-
-// Exists verifies that the configuration file existin on the local filesystem
-func (c *Context) Exists(path string) bool {
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return false
-	}
-	return true
 }
 
 // Init initializes the config for Azdevman
