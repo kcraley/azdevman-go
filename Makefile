@@ -31,7 +31,7 @@ binary:
 container:
 	docker build -t $(BIN_NAME) .
 
-##TAR    test    : executes the all Go tests
+##TAR    test      : executes the all Go tests
 .PHONY: test
 test:
 	go test -v ./...
