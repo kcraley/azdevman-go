@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/json"
 	"io/ioutil"
+	"os"
 
 	"github.com/mitchellh/go-homedir"
 	log "github.com/sirupsen/logrus"
@@ -33,6 +34,7 @@ type Options interface {
 	GetCurrentContextName() string
 	SetCurrentContext(string) bool
 	ViewConfig() ([]byte, error)
+	Exists(string) bool
 }
 
 // GetCurrentContext returns the Profile type which is configured
@@ -70,6 +72,14 @@ func (c *Context) ViewConfig() (contents []byte, err error) {
 		return nil, err
 	}
 	return contents, err
+}
+
+// Exists verifies that the configuration file existin on the local filesystem
+func (c *Context) Exists(path string) bool {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return false
+	}
+	return true
 }
 
 // Init initializes the config for Azdevman
