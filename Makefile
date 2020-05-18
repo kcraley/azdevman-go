@@ -26,7 +26,12 @@ help: Makefile
 binary:
 	CGO_ENABLED=0 GOOS=$(OS) GOARCH=$(ARCH) go build -ldflags "$(AZDEVMAN_LDFLAGS)" -o $(BIN_DIR)$(BIN_NAME)
 
-##TAR    container  :
+##TAR    container : builds a Docker container with the azdevman binary
 .PHONY: container
 container:
 	docker build -t $(BIN_NAME) .
+
+##TAR    test    : executes the all Go tests
+.PHONY: test
+test:
+	go test -v ./...
